@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login |Stock Scan</title>
+    
+<style>
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
+
+* {
+    box-sizing:border-box;
+    margin: 0px;
+    padding: 0px;
+    font-family: Poppins;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #5a4fcf;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+   
+    
+}
+
+.login {
+    width: 50%;
+    height: 100%;
+    
+    float: left;
+    margin: 25px auto;
+    margin-top: 50px;
+    
+}
+
+.login form {
+    background: white;
+    border: 2px solid inherit;
+    border-radius: 25px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 50px;
+    margin-left: 100px;
+   
+    
+    
+}
+
+.login input[type="email"], input[type="password"] {
+    border: none;
+    border-bottom: 2px solid #5a4fcf;
+    display: inline;
+    outline: none;
+    padding: 10px 0px 1px;
+    margin: 10px auto 25px;
+    width: 90%;
+    color: #5a4fcf;
+    font-size: 15px;
+}
+
+.login input:focus {
+    outline: none;
+    color: #5a4fcf;
+    background: white;
+} 
+
+.login input[type=submit] {
+    border: none;
+    border-radius: 25px;
+    display: block;
+    background: #5a4fcf;
+    padding: 10px 35px;
+    max-width: 90%;
+    color: white;
+    text-weight: bolder;
+    margin: 15px auto 10px;
+}
+
+.login .inputs {
+    width: 45%;
+    display:inline-block;
+    margin: 2px auto;
+}
+
+.login label {
+    color: #5a4fcf;
+    align: left;
+}
+
+.login form h1 {
+    color: #5a4fcf;
+    font-weight: bolder;
+    margin: 10px 0px 20px;
+    width: 100%;
+}
+
+.login form p {
+    color: black;
+    text-align: center;
+    margin: 10px;
+    width: 90%;
+}
+
+.login form a {
+    text-decoration: underline;
+    font-weight:bold;
+    color: #5a4fcf;   
+    width: 90%; 
+    text-align: center;
+}
+v{
+
+  margin-top: 10px;
+  color: white;
+  margin-left: 50px;
+}
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login">
+          <nav>
+            <div> <v><a href="/templates/index.html">Back</a></v></div>
+          </nav>
+            <form method="post">
+                <h1>Log In to Your @StockScan Account</h1>
+                <div class="inputs">
+                    <label for="email">Email</label> <br>
+                    <input type="email" name="email" id="email" required> </div>
+                <div class="inputs">
+                    <label for="password">Password</label> <br>
+                    <input type="password" name="password" id="password" required> </div><br>
+                    <button type="button" name="submitData"  id="submitData"  class="signup">Login</button>
+
+                <p>Don't have an account yet? </p>
+                <p><a href="/finalsignup.html">Sign Up</a></p>
+</form>
+</div>
+<div class="login">
+    <img src="https://res.cloudinary.com/benjee/image/upload/v1569253813/undraw_chore_list_iof3_s3yoyc.svg" alt="LOGO" />
+</div>
+</div>
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-auth.js";
+     import { getDatabase,set,ref} from "https://www.gstatic.com/firebasejs/9.13.0/firebase-database.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyCy75Jzt5sAuGp7jL3iAMqBu4FIQdWSAD0",
+        authDomain: "signup-cee2a.firebaseapp.com",
+        projectId: "signup-cee2a",
+        storageBucket: "signup-cee2a.appspot.com",
+        messagingSenderId: "530367934250",
+        appId: "1:530367934250:web:eb7da56dc68c126fd77853",
+        measurementId: "G-E2VR258BSE"
+      };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig); 
+     const auth = getAuth(); 
+  const database = getDatabase(app);
+   
+  submitData.addEventListener('click',(e)=>{
+  var email=document.getElementById('email').value; 
+  var password=document.getElementById('password').value;
+  /*createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      // ...
+  set(ref(database, 'users/' + user.uid), {
+     
+      email: email,
+      password:password
+    })
+  .then(() => {
+    // Data saved successfully!
+  alert('user created successfully'); 
+  })
+  .catch((error) => {
+    // The write failed...
+  alert(error);
+  });
+  alert('user created successfully'); 
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+  alert('user not created successfully'); 
+    });*/
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      // ...
+    // Data saved successfully!
+
+  alert('user logged in successfully'); 
+  window.location.replace("/templates/index.html");
+
+  //.catch((error) => {
+    // The write failed...
+  //alert(error);
+  });
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert(errorMessage);
+    });
+  
+
+</script>
+
+</html>
+

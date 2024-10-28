@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up | Stock Scan</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
+
+* {
+    box-sizing:border-box;
+    margin: 0px;
+    padding: 0px;
+    font-family: Poppins;
+    
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #5a4fcf;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.signup {
+    width: 45%;
+    display: inline;
+    float: left;
+    margin: 25px auto;
+    
+}
+
+.signup form {
+    background: white;
+    border: 2px solid inherit;
+    border-radius: 25px;
+    padding: 25px;
+    text-align: center;
+    margin-left: 27px;
+    margin-top: 25px;
+}
+
+.signup input[type="text"], input[type="email"], input[type="tel"], input[type="password"]{
+border: none;
+border-bottom: 2px solid #5a4fcf;
+display: inline;
+outline: none;
+padding: 10px 0px 1px;
+margin: 10px auto 25px;
+width: 90%;
+color: #5a4fcf;;
+font-size: 18px;
+
+}
+
+.signup input:focus {
+outline: none;
+color: #5a4fcf;
+background: white;
+} 
+
+.signup input[type=submit]{
+    border: none;
+    border-radius: 25px;
+    display: block;
+    background: #5a4fcf;
+    padding: 10px 35px;
+    max-width: 90%;
+    color: white;
+    text-weight: bolder;
+    margin: 15px auto 10px;
+    }
+
+.signup .inputs {
+width: 45%;
+display:inline-block;
+margin: 2px auto;
+}
+
+.signup label {
+    color: #5a4fcf;
+    align: left;
+}
+
+.signup form h1 {
+    color: #5a4fcf;
+    font-weight: bolder;
+    margin: 10px 0px 20px;
+    width: 100%;
+}
+
+.signup form p {
+    color: black;
+    text-align: center;
+    margin: 10px;
+    width: 90%;
+}
+    
+.signup form a{
+    text-decoration: underline;
+    font-weight:bold;
+    color: #5a4fcf;   
+    width: 90%; 
+}
+/*
+.container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+	grid-gap: 10rem;
+} 
+
+.signupimage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.signup form {
+    background: white;
+    max-height: 2000px; 
+    border-radius: 25px;
+    margin: 25% 50px;
+    padding: 25px 50px;
+    
+}
+
+
+
+
+
+ */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="signup">
+            <form>
+                <h1> Create Your @StockScan Account</h1>
+                <div class="inputs">
+                    <label for="firstname">First Name</label> <br>
+                    <input id="fname" type="text" name="firstname" required> </div>
+                <div class="inputs">
+                    <label for="lastname">Last Name</label> <br>
+                    <input id="lname" type="text" name="lastname" required> </div>
+                <div class="inputs">
+                    <label for="email">Email</label> <br>
+                    <input  id="email" type="email" name="email" required> </div>
+                <div class="inputs">
+                    <label for="phonenumber">Phone Number</label> <br>
+                    <input id="num" type="tel" name="phonenumber" required> </div>
+                <div class="inputs">
+                    <label for="password">Password</label> <br>
+                    <input type="password" name="password" id="password" pattern=".{8,}" title="Password should be Eight (8) or more characters" > </div>
+                <div class="inputs">
+                    <label for="password">Confirm Password</label> <br>
+                    <input type="password" name="password" pattern=".{8,}" title="Password should be Eight (8) or more characters" > </div><br>
+              
+<button type="button" name="submitData"  id="submitData"  class="registeration">SignUp</button>
+
+                <p>Have an account already? <a href="/finallogin.html"> Sign In</a></p>
+
+            </form>
+        </div>
+        <div class="signup"> <img src="https://res.cloudinary.com/benjee/image/upload/v1569253813/undraw_chore_list_iof3_s3yoyc.svg" alt="LOGO"/>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+         import { getDatabase,set,ref,update } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
+          // TODO: Add SDKs for Firebase products that you want to use
+          // https://firebase.google.com/docs/web/setup#available-libraries
+        
+          // Your web app's Firebase configuration
+          // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+          const firebaseConfig = {
+            apiKey: "AIzaSyCy75Jzt5sAuGp7jL3iAMqBu4FIQdWSAD0",
+            authDomain: "signup-cee2a.firebaseapp.com",
+            projectId: "signup-cee2a",
+            storageBucket: "signup-cee2a.appspot.com",
+            messagingSenderId: "530367934250",
+            appId: "1:530367934250:web:eb7da56dc68c126fd77853",
+            measurementId: "G-E2VR258BSE"
+          };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig); 
+         const auth = getAuth(); 
+      const database = getDatabase(app);
+       
+      submitData.addEventListener('click',(e)=>
+      {
+        var email=document.getElementById('email').value; 
+        var password=document.getElementById('password').value;
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => 
+          {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+            set(ref(database, 'users/' + user.uid), {
+         
+         email: email,
+         password:password
+        })
+              .then(() =>
+               {
+                 alert('user created successfully'); 
+                 window.location.replace("/templates/index.html");
+                })
+                .catch((error) =>
+              {
+                // The write failed...
+                alert("email not valid"); 
+              })
+      })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          alert("invalid email or password is not entered");
+      alert('user not created successfully'); 
+          })
+        });
+      /*signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          // ...
+      var lgdate=new Date();
+      update(ref(database, 'users/' + user.uid), {
+         
+          last_login:lgdate,
+        })
+      .then(() => {
+        // Data saved successfully!
+      alert('user logged in successfully'); 
+      window.location.replace("mbit.html");
+      })
+      .catch((error) => {
+        // The write failed...
+      alert(error);
+      });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(errorMessage);
+        }); */
+      
+      </script>
+</body>
+
+</html>

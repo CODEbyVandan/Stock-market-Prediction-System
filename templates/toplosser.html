@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Data Display</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='stock.png') }}">
+  <script src="https://cdn.tailwindcss.com"></script>
+ 
+  <title>Stock Scan</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logo.jpg') }}">
+
+  <style>
+    #btn1
+    {
+        justify-content: center;
+    }
+
+    #pro{
+
+      margin-right: 15px;
+    }
+
+    #customers {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    #customers td, #customers th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    
+    #customers tr:nth-child(even){background-color: #f2f2f2;}
+    
+    #customers tr:hover {background-color: #ddd;}
+    
+    #customers th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    #topg{
+
+        font-size: 25px;
+        margin-left: 10px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+</style>
+  
+  
+</head>
+<body>
+
+    <header class="text-gray-600 body-font">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+          <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span class="ml-3 text-xl">Stock Scan</span>
+          </a>
+          <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
+            <a href='templates/index.html' class="mr-5 hover:text-gray-900">Home</a>
+            <a href='aboutus.html' class="mr-5 hover:text-gray-900">About us</a>
+            <a href='info.html' class="mr-5 hover:text-gray-900">Info</a>
+            <a href='contect.html' class="mr-5 hover:text-gray-900">Contact</a>
+          </nav>
+
+          <form autocomplete="off" action="/templates/index1234.html"  method="post">
+          <button id="pro" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Pro tool
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </form>
+
+          <button onclick="window.location.pathname='/login.html';" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">sign in
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <h1  id="topg">Top Losers:</h1>
+      <br>
+  <table id="customers"></table>
+
+  <script>
+    fetch('toplosser.csv')
+      .then(response => response.text())
+      .then(data => {
+        // Parse the CSV data
+        const rows = data.split('\n');
+        const table = document.getElementById('customers');
+
+        // Create table rows and cells
+        rows.forEach(row => {
+          const cells = row.split(',');
+          const tableRow = document.createElement('tr');
+
+          cells.forEach(cell => {
+            const tableCell = document.createElement('td');
+            tableCell.textContent = cell;
+
+            if (cell === 'green') {
+              tableCell.classList.add('green');
+            }
+
+            tableRow.appendChild(tableCell);
+          });
+
+          table.appendChild(tableRow);
+        });
+      });
+  </script>
+</body>
+</html>

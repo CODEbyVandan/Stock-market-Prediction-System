@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Stock Data</title>
+  <!-- Include necessary Plotly CSS and JavaScript files -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.plot.ly/plotly-latest.min.css">
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+  <style>
+    #customers {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    #customers td, #customers th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    
+    #customers tr:nth-child(even){background-color: #f2f2f2;}
+    
+    #customers tr:hover {background-color: #ddd;}
+    
+    #customers th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #04AA6D;
+      color: white;
+    }
+    </style>
+
+
+</head>
+
+<body>
+
+  <header class="text-gray-600 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <span class="ml-3 text-xl">Stock Scan</span>
+      </a>
+      <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400	flex flex-wrap items-center text-base justify-center">
+        <a href='templates/index.html' class="mr-5 hover:text-gray-900">Home</a>
+            <a href='/aboutus.html' class="mr-5 hover:text-gray-900">About us</a>
+            <a href='/info.html' class="mr-5 hover:text-gray-900">Info</a>
+            <a href='/contect.html' class="mr-5 hover:text-gray-900">Contact</a>
+      </nav>
+      <button onclick="window.location.pathname='/finallogin.html';" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">sign in
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+<br>
+
+  <h1 class="ml-3 text-xl">{{ stock_info.longName }}</h1><br>
+  <h2 class="ml-3 text-xl">Stock Symbol: {{ stock_info.symbol }}</h2><br>
+  <p class="ml-3 text-xl">Symbol: {{ stock_info['symbol'] }}</p><br>
+  <p class="ml-3 text-xl">Name: {{ stock_info['longName'] }}</p><br>
+  <p class="ml-3 text-xl">Sector: {{ stock_info['sector'] }}</p><br>
+  <p class="ml-3 text-xl">Market Cap: {{ stock_info['marketCap'] }}</p><br>
+  <p class="ml-3 text-xl">Previous Close: {{ stock_info['regularMarketPreviousClose'] }}</p><br>
+  <p class="ml-3 text-xl">Exchange: {{ stock_info.exchange }}</p><br>
+  <p class="ml-3 text-xl">Currency: {{ stock_info.currency }}</p><br>
+  <p class="ml-3 text-xl">Stock Prices:</p>
+  <!-- Div element for the candlestick chart -->
+  <div id="candlestick_chart" style="width: 100%; height: 500px;"></div>
+  <!-- JavaScript code to render the candlestick chart using Plotly -->
+  <table border="1" id="customers">
+    <tr>
+      <th>Date</th>
+      <th>Open</th>
+      <th>High</th>
+      <th>Low</th>
+      <th>Close</th>
+    </tr>
+    {% for row in stock_prices %}
+    <tr>
+      <td>{{ row['Date'] }}</td>
+      <td>{{ row['Open'] }}</td>
+      <td>{{ row['High'] }}</td>
+      <td>{{ row['Low'] }}</td>
+      <td>{{ row['Close'] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+  <script>
+    // Get the stock data from the Flask app
+    var stockData = JSON.parse('{{ stock_prices|tojson|safe }}');
+
+    var trace = {
+      x: stockData.map(stock => stock['Date']),
+      open: stockData.map(stock => stock['Open']),
+      high: stockData.map(stock => stock['High']),
+      low: stockData.map(stock => stock['Low']),
+      close: stockData.map(stock => stock['Close']),
+      type: 'candlestick',
+      name: '{{ symbol }}',
+      xaxis: 'x',
+       yaxis: 'y',
+      increasing: { line: { color: '#00cc00' } },
+      decreasing: { line: { color: '#cc0000' } },
+      showlegend: false
+
+    };
+    var data = [trace];
+    var layout = {
+      title: '{{ symbol }} Candlestick Chart',
+      xaxis: {
+        title: 'Date',
+        rangeslider: { visible: false },
+        type: 'category',
+        ticktext: stockData.map(function (item) { return item.Date.slice(0, 7); }),
+        tickvals: stockData.map(function (item) { return item.Date; }),
+        //tickangle: -45,
+        tickformat:'%d-%b',
+        automargin: true,
+        showgrid: false
+      },
+      yaxis: {
+        title: 'Price',
+        automargin: true,
+        showgrid: true
+      },
+      margin: {
+        l: 60,
+        r: 60,
+        b: 60,
+        t: 60,
+        pad: 4
+      },
+      paper_bgcolor: '#f8f9fa',
+      plot_bgcolor: '#f8f9fa',
+      hovermode: 'x unified',
+      hoverlabel: { bgcolor: '#ffffff' },
+      font: { family: 'Arial, sans-serif', size: 12 },
+      modebar: {
+        bgcolor: '#f8f9fa',
+        color: '#495057',
+        activecolor: '#495057',
+        bordercolor: '#f8f9fa'
+      }
+    };
+    Plotly.newPlot('candlestick_chart', data, layout,{ responsive: true });
+  </script>
+</body>
+
+</html>
